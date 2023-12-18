@@ -5,10 +5,11 @@ class BlumBlumShub:
         self.state = int(seed) % n
         self.p = p
         self.q = q
+        self.m = self.p * self.q
         self.max_value = n - 1
 
     def next(self):
-        self.state = (self.state ** 2) % (self.p * self.q)
+        self.state = (self.state ** 2) % self.m
         if self.is_bit:
             return self.state & 1
         else:

@@ -73,47 +73,6 @@ from quality_test.test_protocol import proportion_of_sequences_passing_a_test
 # print(round(1 - sum(list_chi2)/number_of_batch, 3))
 
 
-def LCG_Mersenne_blum_test(test, n, alpha):
-    test = test.lower()
-    is_bit = True if test == "fm" else False
-
-    # test2 = datetime.now().timestamp()
-    mt = MersenneTwister(seed=datetime.now().timestamp(), is_bit=is_bit)
-    lcg = LinearCongruentialGenerator(seed=datetime.now().timestamp(), is_bit=is_bit)
-    bbs = BlumBlumShub(seed=datetime.now().timestamp(), is_bit=is_bit)
-
-    # observed_data_mersenne_twister = [random.random() for _ in range(n)]
-    observed_data_mersenne_twister = []
-    observed_data_LCG = []
-    observed_data_BBS = []
-
-    for _ in range(n):
-        observed_data_mersenne_twister.append(mt.next())
-        observed_data_LCG.append(lcg.next())
-        observed_data_BBS.append(bbs.next())
-
-    if test == "chi2":
-        print("Mersenne Twister")
-        print(chi2_test(observed_data_mersenne_twister, 10, alpha=alpha, is_print=True))
-        print("LCG")
-        print(chi2_test(observed_data_LCG, 10, alpha=alpha, is_print=True))
-        print("Blum blum shub")
-        print(chi2_test(observed_data_BBS, 10, alpha=alpha, is_print=True))
-    elif test == "ks":
-        print("Mersenne Twister")
-        print(kolmogorov_smirnov_test(observed_data_mersenne_twister, alpha=alpha, is_print=True))
-        print("LCG")
-        print(kolmogorov_smirnov_test(observed_data_LCG, alpha=alpha, is_print=True))
-        print("Blum blum shub")
-        print(kolmogorov_smirnov_test(observed_data_BBS, alpha=alpha, is_print=True))
-    elif test == "fm":
-        print("Mersenne Twister")
-        print(frequency_monobit_test(observed_data_mersenne_twister, alpha=alpha, is_print=True))
-        print("LCG")
-        print(frequency_monobit_test(observed_data_LCG, alpha=alpha, is_print=True))
-        print("Blum blum shub")
-        print(frequency_monobit_test(observed_data_BBS, alpha=alpha, is_print=True))
-
 # LCG_Mersenne_blum_test("ks", 1000, 0.05)
 
 # proportion_of_sequences_passing_a_test(MersenneTwister, chi2_test, 0.01, 1000, 1000, False)
@@ -136,3 +95,4 @@ def LCG_Mersenne_blum_test(test, n, alpha):
 proportion_of_sequences_passing_a_test(MersenneTwister, spectral_DFT_test, 0.01, 1000, 1000, True)
 proportion_of_sequences_passing_a_test(LinearCongruentialGenerator, spectral_DFT_test, 0.01, 1000, 1000, True)
 proportion_of_sequences_passing_a_test(BlumBlumShub, spectral_DFT_test, 0.01, 1000, 1000, True)
+
